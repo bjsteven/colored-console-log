@@ -67,7 +67,6 @@ function insertConsoleLog (type) {
   const activeEditor = vscode.window.activeTextEditor
   const document = activeEditor.document
   let selection: (vscode.Selection | vscode.Range) = activeEditor.selection
-  // console.log(selection)
   if (selection.isEmpty) selection = document.getWordRangeAtPosition(selection.end) || selection
   const selectedText = document.getText(selection)
   const thisLine = document.lineAt(selection.end.line)
@@ -77,8 +76,14 @@ function insertConsoleLog (type) {
   const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
   const sss = '%s '.repeat(selectedText.split(/\S\s*,\s*\S/g).length).trim()
   // console.log(selectedText.split(/\S\s*,\s*\S/g).length, selectedText.split(/\S\s*,\s*\S/g), sss)
-  let insertText = type === 'primitive' ? `\n${spaceee}console.log('%c${sss}', 'color: ${newColor()}', ${selectedText});`
-    : `\n${spaceee}console.log('%c⧭', 'color: ${newColor()}', ${selectedText});`
+  let insertText = null
+  if (!selectedText) {
+    insertText = type === 'primitive' ? "\n" + spaceee + "console.log(" + selectedText + ");"
+        : "\n" + spaceee + "console.log('%c\u29ED', 'color: " + newColor() + "', " + selectedText + ");";
+  } else {
+    insertText = type === 'primitive' ? "\n" + spaceee + "console.log(" + selectedText + ", '// "+selectedText+"');"
+        : "\n" + spaceee + "console.log('%c\u29ED', 'color: " + newColor() + "', " + selectedText + ");";
+  }
   // console.log(document.languageId === 'vue')
   // console.log(insertText)
   if (document.languageId === 'vue') insertText = insertText.slice(0, -1)
