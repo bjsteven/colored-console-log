@@ -78,19 +78,27 @@ function insertConsoleLog (type) {
   // console.log(selectedText.split(/\S\s*,\s*\S/g).length, selectedText.split(/\S\s*,\s*\S/g), sss)
   let insertText = null
   if (!selectedText) {
-    insertText = type === 'primitive' ? "\n" + spaceee + "console.log(" + selectedText + ");"
-        : "\n" + spaceee + "console.log('%c\u29ED', 'color: " + newColor() + "', " + selectedText + ");";
+    // insertText = type === 'primitive' ? "\n" + spaceee + "console.log(" + selectedText + ");"
+    //     : "\n" + spaceee + "console.log('%c\u29ED', 'color: " + newColor() + "', " + selectedText + ");";
+
+    insertText = type === 'primitive' 
+    ? "\n" + spaceee + "console.group('66666666666')" + "\n" + spaceee + "console.log(" + selectedText + ")" + "\n" + spaceee + "console.groupEnd(); \n"
+    : "\n" + spaceee + "console.log('%c\u29ED', 'color: " + newColor() + "', " + selectedText + ");";
   } else {
+
     insertText = type === 'primitive' ? "\n" + spaceee + "console.log(" + selectedText + ", '// "+selectedText+"');"
         : "\n" + spaceee + "console.log('%c\u29ED', 'color: " + newColor() + "', " + selectedText + ");";
   }
-  // console.log(document.languageId === 'vue')
-  // console.log(insertText)
   if (document.languageId === 'vue') insertText = insertText.slice(0, -1)
   activeEditor.edit(eb => eb.insert(endOfThisLine, insertText)).then(() => {
     if (selectedText) return
     nextLine = document.lineAt(selection.end.translate(1,0).line)
-    const endOfNextLine = new vscode.Position(selection.end.translate(1,0).line, nextLine.range.end.character - (document.languageId === 'vue' ? 1 : 2))
+    // 光标定位 steven 2020.05.20
+    const endOfNextLine = new vscode.Position(selection.end.translate(2,0).line, nextLine.range.end.character)
+    // const endOfNextLine = new vscode.Position(selection.end.translate(2,0).line, nextLine.range.end.character - (document.languageId === 'vue' ? 1 : 2))
+
+
+
     activeEditor.selection = new vscode.Selection(endOfNextLine, endOfNextLine)
   })
 }
