@@ -1,6 +1,6 @@
 # Colored Console Log
  
-test Creates colored console.log messages for the browser.
+123test Creates colored console.log messages for the browser.
 
 ![Demo](gif.gif)
 
