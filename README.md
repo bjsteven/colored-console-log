@@ -1,6 +1,6 @@
 # Colored Console Log
  
-Creates colored console.log messages for the browser.
+test Creates colored console.log messages for the browser.
 
 ![Demo](gif.gif)
 
